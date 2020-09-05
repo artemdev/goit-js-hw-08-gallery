@@ -43,35 +43,32 @@ const openModal = (event) => {
     largeImageURL(event.target.dataset.source)
 }
 
-function updateCurrentSliderImage(event) {
+const updateCurrentSliderImage = (event) => {
     if(event.code === "ArrowRight" || event.code === "ArrowLeft" ) {
-    //initialization
-    let currentIndex = parseInt(modalImage.dataset.number)
-    const nextIndex = nextNumber(currentIndex);
-    const prevIndex = prevNumber(currentIndex);
-    //change current index
-    if(event.code === "ArrowRight" ) {
-        changeModalUrl(getUrlBy(nextIndex))
+        //initialization
+        let currentIndex = parseInt(modalImage.dataset.number)
+        const nextIndex = nextNumber(currentIndex);
+        const prevIndex = prevNumber(currentIndex);
+        //change current index
+        if(event.code === "ArrowRight" ) {
+            changeModalUrl(getUrlBy(nextIndex))
+        }
+        if(event.code === "ArrowLeft" ) {
+            changeModalUrl(getUrlBy(prevIndex))
+        }
     }
-    console.log(`next index` + nextIndex)
-
-    if(event.code === "ArrowLeft" ) {
-        changeModalUrl(getUrlBy(prevIndex))
-    }
-}
-    //change current picture
 }
 
 
-function changeModalUrl(nextImageUrl) {
+const changeModalUrl = (nextImageUrl) => {
     modalImage.setAttribute('src', nextImageUrl)
 }
-function getUrlBy(index) {
+const getUrlBy = (index) => {
     modalImage.dataset.number = index
     return pictures[index].original
 }
 
-function largeImageURL(newUrl) {
+const largeImageURL = (newUrl) => {
     modalImage.src = newUrl
 }
 
@@ -92,4 +89,5 @@ const closeModal = () => {
 //integration
 window.addEventListener('keydown', updateCurrentSliderImage);
 gallery.addEventListener("click", openModal)
-closeModalBtn.addEventListener('click', closeModal)
+// closeModalBtn.addEventListener('click', closeModal)
+modal.addEventListener('click', closeModal)
