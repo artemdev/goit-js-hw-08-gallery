@@ -5,7 +5,7 @@ const gallery = document.querySelector(".gallery")
 const modal = document.querySelector(".lightbox")
 const closeModalBtn = document.querySelector('button[data-action="close-modal"]')
 const modalImage =  document.querySelector('.lightbox__image')
-const maxSliderImages = pictures.length - 1
+const maxSliderImages = 8
 
 //functions
 const createGalleryItem = (image, index, array) => {
@@ -41,8 +41,6 @@ const openModal = (event) => {
     modal.classList.replace("lightbox", "lightbox.is-open")
     modalImage.dataset.number = event.target.dataset.number
     largeImageURL(event.target.dataset.source)
-
-
 }
 
 function updateCurrentSliderImage(event) {
@@ -51,29 +49,26 @@ function updateCurrentSliderImage(event) {
     let currentIndex = parseInt(modalImage.dataset.number)
     const nextIndex = nextNumber(currentIndex);
     const prevIndex = prevNumber(currentIndex);
-
-    //child element by index
-    const nextImageUrl = pictures[nextIndex].original
-
     //change current index
     if(event.code === "ArrowRight" ) {
-         moveTo(nextIndex)
+        changeModalUrl(getUrlBy(nextIndex))
     }
+    console.log(`next index` + nextIndex)
 
     if(event.code === "ArrowLeft" ) {
-        moveTo(prevIndex)
+        changeModalUrl(getUrlBy(prevIndex))
     }
+}
     //change current picture
-    changeModalUrl(nextImageUrl)
-    }
 }
 
 
 function changeModalUrl(nextImageUrl) {
     modalImage.setAttribute('src', nextImageUrl)
 }
-function moveTo(index) {
+function getUrlBy(index) {
     modalImage.dataset.number = index
+    return pictures[index].original
 }
 
 function largeImageURL(newUrl) {
@@ -81,13 +76,11 @@ function largeImageURL(newUrl) {
 }
 
 const prevNumber = (current) => {
-    const prev = current - 1
-    return  prev < 0 ? maxSliderImages : prev
+    return  current === 0 ? maxSliderImages : current - 1
 }
 
 const nextNumber = (current) => {
-    const next = current + 1
-    return next > maxSliderImages ? 0 : next
+    return current === maxSliderImages ? 0 : current + 1
 }
 
 
@@ -97,6 +90,6 @@ const closeModal = () => {
 
 
 //integration
-gallery.addEventListener('keydown', updateCurrentSliderImage);
+window.addEventListener('keydown', updateCurrentSliderImage);
 gallery.addEventListener("click", openModal)
 closeModalBtn.addEventListener('click', closeModal)
